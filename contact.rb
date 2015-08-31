@@ -3,11 +3,12 @@ class Contact
   attr_accessor :name, :email
 
   def initialize(name, email)
-    # TODO: assign local variables to instance variables
+    @name = name
+    @email = email
   end
  
   def to_s
-    # TODO: return string representation of Contact
+    "#{@name} (#{email})"
   end
  
   ## Class Methods
