@@ -15,18 +15,20 @@ class Contact
   class << self
     def create(name, email)
       # TODO: Will initialize a contact as well as add it to the list of contacts
+      new_instance = Contact.new(name, email)
+      ContactDatabase.add(new_instance)
     end
  
     def find(term)
-      # TODO: Will find and return contacts that contain the term in the first name, last name or email
+      ContactDatabase.find(term)
     end
  
     def all
-      # TODO: Return the list of contacts, as is
+      ContactDatabase.all
     end
     
     def show(id)
-      # TODO: Show a contact, based on ID
+      ContactDatabase.show(id)
     end
     
   end
