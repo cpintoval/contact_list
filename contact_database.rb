@@ -36,6 +36,16 @@ class ContactDatabase
       []
     end
 
+    def exists?(email)
+      contacts_array = CSV.read(@@file_path)
+      contacts_array.each do |contact|
+        if contact[2] == email
+          return true
+        end
+      end
+      false
+    end
+
     protected
     def gen_id
       contacts_array = CSV.read(@@file_path)

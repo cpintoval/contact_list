@@ -20,11 +20,15 @@ class Application
       puts "    show - Show a contact"
       puts "    find - Find a contact"
     when 'new'
-      puts "Enter contact's full name: "
-      full_name = $stdin.gets.chomp
       puts "Enter contact's email: "
       email = $stdin.gets.chomp
-      puts "New contact created with id: #{Contact.create(full_name, email)}"
+      if !Contact.exists?(email)
+        puts "Enter contact's full name: "
+        full_name = $stdin.gets.chomp
+        puts "New contact created with id: #{Contact.create(full_name, email)}"
+      else
+        puts "Contact already exists in the database"
+      end
     when 'list'
       list = Contact.all
       if list.length != 0

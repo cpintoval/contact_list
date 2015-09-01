@@ -30,6 +30,10 @@ class Contact
     def show(id)
       ContactDatabase.show(id)
     end
+
+    def exists?(email)
+      ContactDatabase.exists?(email)
+    end
     
   end
  
