@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require_relative 'contact'
 require_relative 'contact_database'
 
@@ -5,12 +6,8 @@ require_relative 'contact_database'
 # This should be the only file where you use puts and gets
 class Application
 
-  def initialize
-
-  end
-
   # Main method to run the app
-  def run
+  def self.run
     arg = ARGV[0]
     case arg
     when 'help'
@@ -25,7 +22,26 @@ class Application
       if !Contact.exists?(email)
         puts "Enter contact's full name: "
         full_name = $stdin.gets.chomp
-        puts "New contact created with id: #{Contact.create(full_name, email)}"
+        puts "Add phone numbers (yes/no)?"
+        cmd = $stdin.gets.chomp
+        if cmd.downcase == "yes"
+          numbers = {}
+          while true
+            puts "Enter label for the phone number: "
+            label = $stdin.gets.chomp
+            puts "Enter phone number: "
+            number = $stdin.gets.chomp
+            numbers[label] = number
+            puts "Add another one? (yes/no)"
+            cmd = $stdin.gets.chomp
+            if cmd.downcase == "no"
+              break
+            end
+          end
+          puts "New contact created with id: #{Contact.create(full_name, email, numbers)}"
+        else
+          puts "New contact created with id: #{Contact.create(full_name, email)}"
+        end
       else
         puts "Contact already exists in the database"
       end
@@ -33,7 +49,14 @@ class Application
       list = Contact.all
       if list.length != 0
         list.each do |item|
-          puts "#{item[0]}: #{item[1]} (#{item[2]})"
+          output = "#{item[0]}: #{item[1]} (#{item[2]})"
+          i = 3
+          while item[i] != nil
+            arr = item[i].split(":")
+            output += " - #{arr[0].capitalize}: #{arr[1]}"
+            i += 1
+          end
+          puts output
         end
         puts "---"
         puts "#{list.length} records total"
@@ -47,6 +70,12 @@ class Application
         if result != []
           puts "Name: #{result[1]}"
           puts "Email: #{result[2]}"
+          i = 3
+          while result[i] != nil
+            arr = result[i].split(":")
+            puts "#{arr[0].capitalize}: #{arr[1]}"
+            i += 1
+          end
         else
           puts "Not found"
         end
@@ -60,6 +89,12 @@ class Application
         if result != []
           puts "Name: #{result[1]}"
           puts "Email: #{result[2]}"
+          i = 3
+          while result[i] != nil
+            arr = result[i].split(":")
+            puts "#{arr[0].capitalize}: #{arr[1]}"
+            i += 1
+          end
         else
           puts "Not found"
         end
@@ -72,5 +107,4 @@ class Application
 end
 
 # Creation of an Application instance and running it
-app = Application.new
-app.run
+Application.run

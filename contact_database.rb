@@ -8,7 +8,14 @@ class ContactDatabase
   class << self
     def add(contact)
       new_id = gen_id
-      CSV.open(@@file_path, "a") { |csv| csv << ["#{new_id}", "#{contact.name}", "#{contact.email}"] }
+      # Adding phone numbers to the CSV array before appending to the file
+      csv_array = ["#{new_id}", "#{contact.name}", "#{contact.email}"]
+      if contact.numbers != {}
+        contact.numbers.each do |k, v|
+          csv_array << "#{k}:#{v}"
+        end
+      end
+      CSV.open(@@file_path, "a") { |csv| csv << csv_array }
       new_id
     end
 
